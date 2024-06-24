@@ -5,24 +5,7 @@ import pumaModel1 from "../assets/puma/puma_ca_pro_classic.jpg"
 import pumaModel2 from "../assets/puma/puma_ca_pro_green.webp"
 import pumaModel3 from "../assets/puma/puma_suede_classic_xxi.avif"
 
-export type SneakersItem = {
-  id: number
-  model: string
-  collection: string
-  price: string
-  picture: string
-}
-
-export type BrandInfoType = {
-  title: string
-  sneakers: SneakersItem[] | []
-  contentText: string
-  pagePath: string
-}
-
-export type BrandsStateType = BrandInfoType[]
-
-const initialState: BrandsStateType = [
+const initialState: BrandsState = [
   {
     title: "ADIDAS",
     sneakers: [
@@ -165,14 +148,29 @@ const initialState: BrandsStateType = [
   },
 ]
 
-export type BrandsReducerActionType = any
-
 export const brandsReducer = (
-  state: BrandsStateType = initialState,
-  action: BrandsReducerActionType
-): BrandsStateType => {
+  state: BrandsState = initialState,
+  action: BrandsReducerAction
+): BrandsState => {
   switch (action.type) {
     default:
       return state
   }
 }
+
+// types
+export type SneakersItem = {
+  id: number
+  model: string
+  collection: string
+  price: string
+  picture: string
+}
+export type BrandInfo = {
+  title: string
+  sneakers: SneakersItem[] | []
+  contentText: string
+  pagePath: string
+}
+export type BrandsState = BrandInfo[]
+export type BrandsReducerAction = any

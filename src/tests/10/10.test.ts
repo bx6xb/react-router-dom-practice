@@ -7,7 +7,6 @@ import {
   makeHairstyle,
   moveUser,
   moveUserToAnotherHouse,
-  removeBook,
   updateBook,
   updateCompany,
   updateCompanyTitle,

@@ -1,60 +1,59 @@
-import { Error404 } from "./components/pages/Error404"
-import { Adidas } from "./components/pages/Adidas"
-import { Puma } from "./components/pages/Puma"
-import { Abibas } from "./components/pages/Abibas"
+import { Link, useNavigate } from "react-router-dom"
 import styles from "./components/Site.module.css"
-import { NavLink, Navigate, Route, Routes } from "react-router-dom"
-import { Model } from "./components/pages/Model/Model"
-import { BrandPageContainer } from "./components/pages/BrandPage/BrandPageContainer"
-import { ModelContainer } from "./components/pages/Model/ModelContainer"
-import { Prices } from "./components/pages/Prices"
+import { NavLink, Outlet } from "react-router-dom"
 
-const PATH = {
-  ADIDAS: "/adidas",
-  PUMA: "/puma",
-  ABIBAS: "/abibas",
-  PRICES: "/prices",
-} as const
+const links = [
+  {
+    name: "Adidas",
+    path: "/adidas",
+  },
+  {
+    name: "Puma",
+    path: "/puma",
+  },
+  {
+    name: "Abibas",
+    path: "/abibas",
+  },
+  {
+    name: "Prices",
+    path: "/prices",
+  },
+  {
+    name: "Protected page",
+    path: "/protected-page",
+  },
+]
 
 function App() {
+  const navigate = useNavigate()
+  const navigateHandler = () => navigate(-1)
+
+  const mappedLinks = links.map(({ name, path }) => (
+    <li>
+      <NavLink to={path} className={({ isActive }) => (isActive ? styles.active : "")}>
+        {name}
+      </NavLink>
+    </li>
+  ))
+
   return (
     <div>
       <div className={styles.header}>
         <h1>HEADER</h1>
       </div>
       <div className={styles.body}>
-        <ul className={styles.nav}>
-          <li>
-            <NavLink to={PATH.ADIDAS} className={({ isActive }) => (isActive ? styles.active : "")}>
-              Adidas
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={PATH.PUMA} className={({ isActive }) => (isActive ? styles.active : "")}>
-              Puma
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={PATH.ABIBAS} className={({ isActive }) => (isActive ? styles.active : "")}>
-              Abibas
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={PATH.PRICES} className={({ isActive }) => (isActive ? styles.active : "")}>
-              Prices
-            </NavLink>
-          </li>
-        </ul>
+        <ul className={styles.nav}>{mappedLinks}</ul>
         <div className={styles.content}>
-          <Routes>
-            <Route path="/" element={<Navigate to={`${PATH.ADIDAS}/`} />} />
-
-            <Route path="/:brand" element={<BrandPageContainer />} />
-            <Route path="/:brand/model/:id" element={<ModelContainer />} />
-            <Route path={PATH.PRICES} element={<Prices />} />
-
-            <Route path="/*" element={<Error404 />} />
-          </Routes>
+          <div className="buttonsWrapper">
+            <Link to={"adidas"} className="mainMenuBtn">
+              Main menu
+            </Link>
+            <button onClick={navigateHandler} className="mainMenuBtn">
+              Prev
+            </button>
+          </div>
+          <Outlet />
         </div>
       </div>
       <div className={styles.footer}>abibas {new Date().getFullYear()}</div>

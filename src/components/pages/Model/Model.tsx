@@ -1,10 +1,14 @@
-import { SneakersItem } from "../../../redux/brandsReducer"
+import { useParams } from "react-router-dom"
+import { useAppSelector } from "../../../redux/store"
 
-type ModelPropsType = {
-  sneakerModel: SneakersItem
-}
+export const Model = () => {
+  const params = useParams<ModelParams>()
+  const state = useAppSelector((state) => state.brands)
 
-export const Model = (props: ModelPropsType) => {
+  const sneakerModel = state
+    .find((b) => b.pagePath === params.brand)
+    ?.sneakers.find((s) => s.id.toString() === params.id)!
+
   return (
     <div>
       <div
@@ -17,14 +21,20 @@ export const Model = (props: ModelPropsType) => {
           alignItems: "center",
         }}
       >
-        <h2>{props.sneakerModel.model}</h2>
-        <h3>Price {props.sneakerModel.price}</h3>
+        <h2>{sneakerModel.model}</h2>
+        <h3>Price {sneakerModel.price}</h3>
         <img
           style={{ width: "300px", height: "300px", objectFit: "cover" }}
-          src={props.sneakerModel.picture}
-          alt={props.sneakerModel.model}
+          src={sneakerModel.picture}
+          alt={sneakerModel.model}
         />
       </div>
     </div>
   )
+}
+
+// types
+type ModelParams = {
+  brand: string
+  id: string
 }

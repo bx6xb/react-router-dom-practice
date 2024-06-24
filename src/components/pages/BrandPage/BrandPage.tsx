@@ -1,14 +1,16 @@
-import { Link } from "react-router-dom"
-import { BrandInfoType } from "../../../redux/brandsReducer"
+import { Link, useParams } from "react-router-dom"
+import { useAppSelector } from "../../../redux/store"
 
-type BrandPagePropsType = {
-  brand: BrandInfoType
-}
+export const BrandPage = () => {
+  const params = useParams<ParamsType>()
 
-export const BrandPage = (props: BrandPagePropsType) => {
-  return (
+  const brand = useAppSelector((state) =>
+    state.brands.find((brand) => brand.pagePath === params.brand)
+  )
+
+  return brand ? (
     <div>
-      <h2 style={{ textAlign: "center" }}>{props.brand.title}</h2>
+      <h2 style={{ textAlign: "center" }}>{brand.title}</h2>
       <div
         style={{
           display: "flex",
@@ -17,8 +19,8 @@ export const BrandPage = (props: BrandPagePropsType) => {
           margin: "10px",
         }}
       >
-        {props.brand.sneakers.map((s) => (
-          <Link key={s.model} to={`/${props.brand.pagePath}/model/${s.id}`}>
+        {brand.sneakers.map((s) => (
+          <Link key={s.model} to={`/${brand.pagePath}/model/${s.id}`}>
             <img
               style={{ width: "300px", height: "300px", objectFit: "cover" }}
               src={s.picture}
@@ -27,7 +29,14 @@ export const BrandPage = (props: BrandPagePropsType) => {
           </Link>
         ))}
       </div>
-      <p>{props.brand.contentText}</p>
+      <p>{brand.contentText}</p>
     </div>
+  ) : (
+    <h2>Brand not found</h2>
   )
+}
+
+// types
+type ParamsType = {
+  brand: string
 }
